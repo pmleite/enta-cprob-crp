@@ -16,12 +16,20 @@ void setup() {
   pinMode(MOTOR_2_PIN_A, OUTPUT);
   pinMode(MOTOR_2_PIN_B, OUTPUT);
 
+ 
+  servoMUX.begin();
+  servoMUX.setPWMFreq(60);
 
 }
 
 void loop() {
-  
-  
-
+  // servoMUX.setPWM(0,0,125);
+  // delay(500);
+  // servoMUX.setPWM(0,0,575);
+  // delay(500);
+  // servoMUX.setPWM(1,0,125);
+  // delay(500);
 
 }
+
+
