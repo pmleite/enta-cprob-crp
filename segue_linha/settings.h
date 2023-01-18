@@ -15,13 +15,31 @@
 
 #define BAUD_RATE      9600
 
+#define SLOW_SPEED     20
+#define MED_SPEED      15
+#define FAST_SPEED     8
 
-#define SERVO_MIN_PULSE  125  //Pulso para 0 graus (depende da marca dos servos), o nome não pode ser alterado
-#define SERVO_MAX_PULSE  600  //Pulso para 180 graus (depende da marca dos servos), o nome não 
+#define PULSE_FREQ     60
+#define SERVOMIN       120  //Pulso para 0 graus (depende da marca dos servos), o nome não pode ser alterado
+#define SERVOMAX       575  //Pulso para 180 graus (depende da marca dos servos), o nome não 
 
+#define INIT_GARRA_ANGLE 0
+#define INIT_BASE_ANGLE  90
+#define INIT_VERT_ANGLE  90
+#define INIT_HORI_ANGLE  0
 
-Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40);
-uint8_t servoNum = 0;
+#define SERVO_GARRA    0
+#define SERVO_BASE     1
+#define SERVO_VERT     2
+#define SERVO_HORI     3
+
+Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa do concurso
+uint8_t servonum = 0;
+
+int servGarraLastPos = 0;
+int servBaseLastPos  = 0;
+int servVertLastPos  = 0;
+int servHoriLastPos  = 0;
 
 /*
   S1	  S2	  S3	  S4	  ---> Result
