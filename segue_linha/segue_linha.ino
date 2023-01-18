@@ -1,9 +1,17 @@
+#include "settings.h"
+#include "utils.h"
+
 void setup() {
-  // put your setup code here, to run once:
+
+  Serial.begin(BAUD_RATE);
+
+  pinMode()
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+  
+
 
 }
