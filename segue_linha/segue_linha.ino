@@ -20,14 +20,21 @@ void setup() {
   servoMUX.setPWMFreq(PULSE_FREQ);
   delay(500);
 
-  armInitPosition();
+  //armInitPosition();
   delay(1000);
 }
 
 
 void loop() {
-  
- Serial.println(trackSense());
+
+ moveServo(SERVO_VERT, 0, FAST_SPEED);
+ delay(500);
+ moveServo(SERVO_VERT, 180, FAST_SPEED);
+ delay(500);
+ moveServo(SERVO_GARRA, 110, FAST_SPEED);
+ delay(500);
+ moveServo(SERVO_GARRA, 30, FAST_SPEED);
+ delay(500);
   
 }
 

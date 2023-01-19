@@ -19,19 +19,19 @@
 #define MED_SPEED      15
 #define FAST_SPEED     8
 
-#define PULSE_FREQ     60
-#define SERVOMIN       120  //Pulso para 0 graus (depende da marca dos servos), o nome não pode ser alterado
-#define SERVOMAX       575  //Pulso para 180 graus (depende da marca dos servos), o nome não 
+#define PULSE_FREQ     50
+#define SERVOMIN       100  //Pulso para 0 graus (depende da marca dos servos), o nome não pode ser alterado
+#define SERVOMAX       450  //Pulso para 180 graus (depende da marca dos servos), o nome não 
 
 #define INIT_GARRA_ANGLE 0
 #define INIT_BASE_ANGLE  90
 #define INIT_VERT_ANGLE  90
 #define INIT_HORI_ANGLE  0
 
-#define SERVO_GARRA    0
-#define SERVO_BASE     1
-#define SERVO_VERT     2
-#define SERVO_HORI     3
+#define SERVO_GARRA    0   //Min 30º  Max 100º
+#define SERVO_BASE     1   //Min 0º   Max 180º
+#define SERVO_VERT     2   //
+#define SERVO_HORI     3   //Min 0º   Max 110º
 
 Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa do concurso
 uint8_t servonum = 0;

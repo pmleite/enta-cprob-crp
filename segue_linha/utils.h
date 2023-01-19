@@ -12,7 +12,7 @@ int convertAngleToPulse(int angle){
 }
 
 int moveServo(int servo, int angulo, long speed){
-        
+
         int lastPos;
 
         if (servo == 0) lastPos = servGarraLastPos;
@@ -36,6 +36,7 @@ int moveServo(int servo, int angulo, long speed){
         if (servo == 1) servBaseLastPos  = angulo;
         if (servo == 2) servVertLastPos  = angulo;
         if (servo == 3) servHoriLastPos  = angulo;
+        
 }
 
 
