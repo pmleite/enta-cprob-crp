@@ -11,6 +11,10 @@ int convertAngleToPulse(int angle){
   return map(angle, 0, 180, SERVOMIN, SERVOMAX);
 }
 
+int convertSpeedToPulse(int speed){
+  return map(speed, 0, 100, MOTOR_MIN_PULSE, MOTOR_MAX_PULSE);
+}
+
 int moveServo(int servo, int angulo, long speed){
 
         int lastPos;
@@ -40,9 +44,3 @@ int moveServo(int servo, int angulo, long speed){
 }
 
 
-void armInitPosition(){
-  moveServo(SERVO_BASE,  INIT_BASE_ANGLE, FAST_SPEED);
-  moveServo(SERVO_VERT,  INIT_VERT_ANGLE, FAST_SPEED);
-  moveServo(SERVO_HORI,  INIT_HORI_ANGLE, FAST_SPEED);
-  moveServo(SERVO_GARRA, INIT_GARRA_ANGLE, FAST_SPEED);
-}
