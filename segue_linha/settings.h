@@ -64,7 +64,7 @@
 #define MOTOR_2_A        10
 #define MOTOR_2_B        11
 
-Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa do concurso
+Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa! pode ser outro.
 uint8_t servonum = 0;
 
 int servGarraLastPos =   0;
@@ -72,20 +72,3 @@ int servBaseLastPos  =   0;
 int servVertLastPos  =   0;
 int servHoriLastPos  =   0;
 
-/*
-  S1	  S2	  S3	  S4	  ---> Result
-  1	    0	    0	    1	    ---> Motor turn right
-  0	    1	    1	    0   	---> Motor turn left
-
-  0	    0	    0	    0     |
-  1	    0	    0	    0     |
-  0	    1	    0   	0     |--> Motor Coasts
-  0	    0	    1	    0     |
-  0	    0   	0   	1     |
-
-  0	    1	    0	    1	    |--> Motor Brake
-  1	    0	    1	    0     |--> Motor Brake
-
-  X	    X	    1	    1	    |--> Short circuit
-  1	    1   	X	    X     |--> Short circuit
-*/

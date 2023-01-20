@@ -10,7 +10,16 @@
  *
  *   4096*5/6=3413. 
  *
- * Neste caso o valor não pode ultrapassar os 3413 pulsos para não danificar o(s) motor(es).
+ * Neste caso o valor não pode ultrapassar os 3413 pulsos para não danificar o(s) motor(es).  
+ *
+ *     ___M1___    ____M2____
+ *     S8	   S9	   S10	  S11	        
+ *     1	   0	    1	     0	    ---> frente
+ *     0	   1	    0	     1   	  ---> tras
+ *     1	   0	    0	     1	    ---> direita
+ *     0	   1	    1	     0   	  ---> esquerda
+ *     0	   0	    0	     0	    ---> stop
+ *
  */
 
 //Pára ambos os motores
@@ -47,6 +56,3 @@ void right(int speed, int diferential){
   servoMUX.setPWM(8,0,0); servoMUX.setPWM(9,0,speed);                     //M1
   servoMUX.setPWM(10,0,(speed-diferential)); servoMUX.setPWM(11,0,speed); //M2
 }
-
-
-
