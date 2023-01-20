@@ -13,17 +13,14 @@ int opbterPulsosDeCor(char color) {
       digitalWrite(S2,LOW);
       digitalWrite(S3,LOW);
     }
-
     if (color == 'G'){
       digitalWrite(S2,HIGH);
       digitalWrite(S3,HIGH);
     }
-
     if (color == 'B'){
       digitalWrite(S2,LOW);
       digitalWrite(S3,HIGH);
     }
-
     if (color == 'W'){
       digitalWrite(S2,HIGH);
       digitalWrite(S3,LOW);
@@ -34,17 +31,20 @@ int opbterPulsosDeCor(char color) {
 }
 
 
-//função que intrepreta os valores e devolve a cor
-int wichColor(int r, int g, int b, int w){
 
+/**
+* função que intrepreta os valores e devolve a cor detetada
+*
+* @param r valor da leitura dos pulsos do RED, convertido em escala de 0 a 255
+* @param g valor da leitura dos pulsos do GREEN, convertido em escala de 0 a 255
+* @param b valor da leitura dos pulsos do BLUE, convertido em escala de 0 a 255
+* @param w valor da leitura dos pulsos do WHITE, convertido em escala de 0 a 255
+*
+* @return 0=Red, 1=Green, 2=Blue, 3=White, 4=Preto   
+*/
+int wichColor(int r, int g, int b, int w){
   //Variavel de controlo de avaliação da cor
   int resultColor;
-  /***********************************************************
-    Esta avaliação vai decidir, a partir dos 4 valores 
-    passados por parameteros r,g,b,w qual a cor que está
-    a ser detetada cooresponde à cor detetada.
-    @return: 0=Red, 1=Green, 2=Blue, 3=White, 4=Preto    
-    **********************************************************/
   //Verifica se é branco, se sim devolve 3  
   resultColor = ( w == 0 ) ? 3 : false;
   //Verifica se é preto (todas as leituras negativas), se sim devolve 4
@@ -56,16 +56,21 @@ int wichColor(int r, int g, int b, int w){
 }
 
 
-
+/**
+* função que imprime as leituras dos vários pulsus.
+*
+* Esta função é importante fazer a leitura dos valores a inserir 
+* nos parâmetros de calibração.
+*
+* @param r valor da leitura dos pulsos do RED 
+* @param g valor da leitura dos pulsos do GREEN
+* @param b valor da leitura dos pulsos do BLUE 
+* @param w valor da leitura dos pulsos do WHITE 
+* 
+*/
 void printCalibrationData(int r, int g, int b, int w){
-    Serial.print("Red = ");
-    Serial.print(r);
-    Serial.print(" - Green = ");
-    Serial.print(g);
-    Serial.print(" - Blue = ");
-    Serial.print(b);
-    Serial.print(" - white = ");
-    Serial.println(w);
+    str = " RED -> " + String(r) + "  GREEN -> " + Stirng(g) + "  BLUE -> " + String(b) + "  WHITE -> " + String(w);
+    Serial.println(str);
 }
 
 	
