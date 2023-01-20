@@ -1,6 +1,5 @@
 #include "settings.h"
 #include "utils.h"
-#include "servo_moves.h"
 #include "motor_moves.h"
 
 void setup() {
@@ -15,8 +14,6 @@ void setup() {
   servoMUX.setPWMFreq(PULSE_FREQ);
   delay(500);
 
-  armInitPosition();
-  delay(200);
   stop();
   delay(200);
 }
