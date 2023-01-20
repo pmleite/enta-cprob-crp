@@ -59,7 +59,7 @@
 Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa! pode ser outro.
 uint8_t servonum = 0;
 
-int irLeftStat, irCenterStat, irRightState
+int irLeftStat, irCenterStat, irRightState;
 
 int servGarraLastPos =   0;
 int servBaseLastPos  =   0;
