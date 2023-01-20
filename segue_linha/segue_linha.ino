@@ -1,5 +1,7 @@
 #include "settings.h"
 #include "utils.h"
+#include "servo_moves.h"
+#include "motor_moves.h"
 
 void setup() {
 
@@ -9,19 +11,37 @@ void setup() {
   pinMode(IR_LEFT_PIN, INPUT);
   pinMode(IR_CENTER_PIN, INPUT);
   pinMode(IR_RIGHT_PIN, INPUT);
+  
+  servoMUX.begin();
+  servoMUX.setPWMFreq(PULSE_FREQ);
+  delay(500);
 
   //Pinos de controlo do motor
   pinMode(MOTOR_1_PIN_A, OUTPUT);
   pinMode(MOTOR_1_PIN_B, OUTPUT);
   pinMode(MOTOR_2_PIN_A, OUTPUT);
   pinMode(MOTOR_2_PIN_B, OUTPUT);
+
+  armInitPosition();
+  delay(200);
+  stop();
+  delay(200);
+
 }
+
 
 void loop() {
 
-  
-  
-  
 
+  forward(convertSpeedToPulse(0));
+  delay(500);
+  stop();
+  delay(500);
+  backward(convertSpeedToPulse(0));
+  delay(500);
+  stop();
+  delay(500);
 
 }
+
+
