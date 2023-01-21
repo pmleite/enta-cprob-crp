@@ -2,11 +2,28 @@
 #include "utils.h"
 
 void setup() {
-  // put your setup code here, to run once:
 
+  Serial.begin(BAUT_RATE);
+  delay(500);
+
+  //Definição das GPIO do detetor de cor
+  pinMode(S0, OUTPUT);
+	pinMode(S1, OUTPUT);
+	pinMode(S2, OUTPUT);
+	pinMode(S3, OUTPUT);
+  pinMode(SOut, INPUT);
+
+  //Ajusta a amplitude do pulse para 20% (Varia se for arduino, raspbery, etc)
+	digitalWrite(S0,HIGH);
+	digitalWrite(S1,LOW);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  
+
+  updateColorValues();
+  printCalibrationValues();
+  //wichColor(redValue, greenValue, blueValue, whiteValue);
 
 }
