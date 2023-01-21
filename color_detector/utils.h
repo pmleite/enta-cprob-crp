@@ -3,7 +3,7 @@
 * cujo o limite inferior e superior é definido pelas
 * variaveis "scaleLowVal" e "scaleHighVal" nos settings
 *
-* @param pulseVal valor da leitura do pulso
+* @param pulseVal valor da leitura do pulso.
 * @return um INTEIRO compreendido entre o valor de scaleLowVal e scaleHighVal
 */
 int convertPulseValue(int pulseVal, int minPulse, int maxPulse, bool calibrate=false){
