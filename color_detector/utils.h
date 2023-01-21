@@ -1,5 +1,31 @@
-//Função para ler o pulso de luz vermelha
-int opbterPulsosDeCor(char color) {
+/**
+* função que transforma os valores de pulsos para um escalar
+* cujo o limite inferior e superior é definido pelas
+* variaveis "scaleLowVal" e "scaleHighVal" nos settings
+*
+* @param pulseVal valor da leitura do pulso
+* @return um INTEIRO compreendido entre o valor de scaleLowVal e scaleHighVal
+*/
+int convertPulseValue(int pulseVal, int minPulse, int maxPulse, bool calibrate=false){
+
+  if (calibrate) return pulseVal;
+  return map(pulseVal,minPulse,maxPulse,scaleLowVal,scaleHighVal);
+ 
+}
+
+/**
+*  função que obtém os pulsos de cor aplicando
+*  o respetivo filtro do fotodiodo pela ativação das
+*  seguinte portas:
+*
+*      S2	  S3	    Photodiode type
+*      LOW	  LOW	      Red
+*      LOW	  HIGH	    Blue
+*      HIGH	  LOW	      Clear (No filter)
+*      HIGH	  HIGH	    Green
+*  
+*/
+void updateColorValues(bool calibrate=false) {
 
     /*
       S2	  S3	    Photodiode type
@@ -9,27 +35,30 @@ int opbterPulsosDeCor(char color) {
       HIGH	HIGH	    Green
     */
 
-    if (color == 'R'){
-      digitalWrite(S2,LOW);
-      digitalWrite(S3,LOW);
-    }
-    if (color == 'G'){
-      digitalWrite(S2,HIGH);
-      digitalWrite(S3,HIGH);
-    }
-    if (color == 'B'){
-      digitalWrite(S2,LOW);
-      digitalWrite(S3,HIGH);
-    }
-    if (color == 'W'){
-      digitalWrite(S2,HIGH);
-      digitalWrite(S3,LOW);
-    }
-	
-  //Le o pulso de saida e retorna o valor (função do arduino)
-	return pulseIn(SOut, LOW);
-}
+    //Verifica e atualiza o valor Vermnelho
+    digitalWrite(S2,LOW);
+    digitalWrite(S3,LOW);
+    redValue=convertPulseValue(pulseIn(SOut, LOW), redMin, redMax, calibrate);
+    delay(COLOR_READ_DELAY);
 
+    //Verifica e atualiza o valor Verde
+    digitalWrite(S2,HIGH);
+    digitalWrite(S3,HIGH);
+    greenValue = convertPulseValue(pulseIn(SOut, LOW), greenMin, greenMax, calibrate);
+    delay(COLOR_READ_DELAY);
+    
+    //Verifica e atualiza o valor Azul
+    digitalWrite(S2,LOW);
+    digitalWrite(S3,HIGH);
+    blueValue = convertPulseValue(pulseIn(SOut, LOW), blueMin, blueMax, calibrate);
+    delay(COLOR_READ_DELAY);
+
+    //Verifica e atualiza o valor Branco
+    digitalWrite(S2,HIGH);
+    digitalWrite(S3,LOW);
+    whiteValue = convertPulseValue(pulseIn(SOut, LOW), whiteMin, whiteMax, calibrate);
+    delay(COLOR_READ_DELAY);
+}
 
 
 /**
@@ -43,15 +72,19 @@ int opbterPulsosDeCor(char color) {
 * @return 0=Red, 1=Green, 2=Blue, 3=White, 4=Preto   
 */
 int wichColor(int r, int g, int b, int w){
-  //Variavel de controlo de avaliação da cor
-  int resultColor;
-  //Verifica se é branco, se sim devolve 3  
-  resultColor = ( w == 0 ) ? 3 : false;
-  //Verifica se é preto (todas as leituras negativas), se sim devolve 4
-  resultColor = ( r<0 && g<0 && b<0 && w<0 ) ? 4 : false;
-  //Verifica do r,g,b qual o maior e, dependendo do caso, devolve respetivamente 0,1,2
-  resultColor = ( r > g ? 0 : 1) > b ? ( r > g ? 0 : 1 ) : 2 ;
 
+  String Tmp = String(r) + "," + String(g) + "," + String(b) + "," + String(w);
+  Serial.println(Tmp);
+
+  int resultColor;
+
+  if (w == 0 || w == 255){
+      resultColor = 4;
+  }
+  else if ( r < g ) {
+     resultColor   = 1;
+    
+  }
   return resultColor;
 }
 
@@ -68,9 +101,11 @@ int wichColor(int r, int g, int b, int w){
 * @param w valor da leitura dos pulsos do WHITE 
 * 
 */
-void printCalibrationData(int r, int g, int b, int w){
-    str = " RED -> " + String(r) + "  GREEN -> " + Stirng(g) + "  BLUE -> " + String(b) + "  WHITE -> " + String(w);
-    Serial.println(str);
+void printCalibrationValues(){
+     String str = "R:" + String(redValue)   + "," + "G:" + String(greenValue) + "," +
+                  "B:" + String(blueValue)  + "," + "W:" + String(whiteValue);
+     Serial.println(str);                 
 }
+
 
 	

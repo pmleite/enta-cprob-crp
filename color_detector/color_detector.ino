@@ -20,15 +20,10 @@ void setup() {
 
 void loop() {
 
-  COLOR_DET_CALIBRATION ? redPW   = opbterPulsosDeCor('R') : redPW = map( opbterPulsosDeCor('R'), redMin,redMax,255,0);
-  COLOR_DET_CALIBRATION ? greenPW = opbterPulsosDeCor('G') : redPW = map( opbterPulsosDeCor('G'), greenMin,greenMax,255,0);
-  COLOR_DET_CALIBRATION ? bluePW  = opbterPulsosDeCor('B') : redPW = map( opbterPulsosDeCor('B'), blueMin,blueMax,255,0);
-  COLOR_DET_CALIBRATION ? whitePW = opbterPulsosDeCor('W') : redPW = map( opbterPulsosDeCor('W'), whiteMin,whiteMax,255,0);
+  
 
-  if (COLOR_DET_CALIBRATION){
-    printCalibrationData(redPW, greenPW, bluePW, whitePW);
-  }else{
-    Serial.println(String(wichColor(redPW, greenPW, bluePW, whitePW)));
-  }
+  updateColorValues();
+  printCalibrationValues();
+  //wichColor(redValue, greenValue, blueValue, whiteValue);
 
 }
