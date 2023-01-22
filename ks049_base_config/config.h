@@ -23,14 +23,6 @@
 #define SERVOMAX        450  //Pulso para 180 graus (depende da marca dos servos), o nome não 
 
 /**
-* Angulos inciais. Atenção aos limites mecânicos
-*/
-#define INIT_GARRA_ANGLE 30
-#define INIT_BASE_ANGLE  90
-#define INIT_VERT_ANGLE  90
-#define INIT_HORI_ANGLE  0
-
-/**
 * Angulos maximos e minimos para cada servo.
 * Por limitações mecânicas nem todos os servos, do robot, podem
 * operar de 0 a 180 grau. Estes valores previnem exceder os
@@ -47,6 +39,15 @@
 
 #define HORI_MAX_ROT      0
 #define HORI_MIN_ROT      180
+
+
+/**
+* Angulos inciais. Atenção aos limites mecânicos
+*/
+#define INIT_GARRA_ANGLE OPENED_CLAW
+#define INIT_BASE_ANGLE  90
+#define INIT_VERT_ANGLE  VERT_MIN_ROT
+#define INIT_HORI_ANGLE  HORI_MIN_ROT / 2
 
 /** 
 * Variaveis com velocidades de movimento das garras, 

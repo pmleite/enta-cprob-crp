@@ -51,14 +51,6 @@ void setup() {
 
 void loop() {
 
-  abreGarra();
-  delay(1000);
-  fechaGarra();
-    delay(1000);
-  // moveBase(BASE_MAX_ROT);
-  // delay(5000);
-  // moveBase(BASE_MIN_ROT);
-  // delay(5000);
 
-   
+
 }

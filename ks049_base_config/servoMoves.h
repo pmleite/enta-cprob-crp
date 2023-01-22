@@ -2,10 +2,10 @@
 * Move o braço para uma posição que se quer como incial
 */
 void armInitPosition(long speed=SLOW_SPEED){
-  // moveServo(BASE_SERVO_PWM,  INIT_BASE_ANGLE,  speed);
-  // moveServo(VERT_SREVO_PWM,  INIT_VERT_ANGLE,  speed);
-  // moveServo(HORI_SERVO_PWM,  INIT_HORI_ANGLE,  speed);
-  // moveServo(CLAW_SERVO_PWM,  INIT_GARRA_ANGLE, speed);
+  moveServo(BASE_SERVO_PWM,  INIT_BASE_ANGLE,  speed);
+  moveServo(VERT_SERVO_PWM,  INIT_VERT_ANGLE,  speed);
+  moveServo(HORI_SERVO_PWM,  INIT_HORI_ANGLE,  speed);
+  moveServo(CLAW_SERVO_PWM,  INIT_GARRA_ANGLE, speed);
 }
 
 /**
