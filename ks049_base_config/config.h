@@ -1,11 +1,12 @@
+#include <Adafruit_PWMServoDriver.h>
 #include <Wire.h>
-#include <Adafruit_PWMServoDriver.h> 
+ 
 
 /* Variaveis de configuração base */
 #define BAUD_RATE             115200
-#define COLOR_READ_DELAY      50    //Não deve ser inferior a 50
+#define COLOR_READ_DELAY      50    //Não deve ser inferior a 50 nem superior a 60 
 #define COLOR_CALIBRATION     false
-#define DEBUG                 false
+#define DEBUG                 true
 #define PULSE_FREQ            50    //Frequencia base de trabalho do MUX PWM 
 
 /* Servos - PWM index (ports) */
@@ -173,19 +174,3 @@ int servHoriLastPos  =   0;
 */
 Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa! pode ser outro.
 //uint8_t servonum = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

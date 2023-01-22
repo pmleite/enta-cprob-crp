@@ -146,7 +146,7 @@ void detetaDesvio(){
   rightSensorReading  = !digitalRead(RIGHT_IR_SENSOR);
 
   if(DEBUG){
-    Serial.println(String(leftSensorReading) + "\t" + String(centerSensorReading) + "\t" + String(rightSensorReading));
+    Serial.println(String(leftSensorReading) + "\t" + String(centerSensorReading) + "\t" + String(rightSensorReading) + "\t" + desvio);
   }
 
        if (!leftSensorReading  && centerSensorReading  && !rightSensorReading) desvio =  0;

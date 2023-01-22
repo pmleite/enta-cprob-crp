@@ -50,7 +50,5 @@ void setup() {
 }
 
 void loop() {
-
-
-
+  detetaDesvio();
 }
