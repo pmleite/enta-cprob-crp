@@ -1,5 +1,7 @@
 #include "config.h"
 #include "utils.h"
+#include "motorMoves.h"
+#include "servoMoves.h"
 
 void setup() {
   
@@ -36,24 +38,27 @@ void setup() {
         Serial.print("\tW:"); Serial.println(whiteValue);
       }
 
+  //Inicializa o MUX PWM
+  servoMUX.begin();
+  servoMUX.setPWMFreq(PULSE_FREQ);
+  delay(500);
+
+  stopCar();
+  armInitPosition();
   delay(1000);
+
 }
 
 void loop() {
-  
-   //Lê pulsos de cores e atualiza variaveis das cores
-   atualizaValoresDasCores();
-   //Deteta a cor e atualiza a variavel <detectedColor> com o valor detetado
-   detetaCor();
 
-   //Calcula a distancia medida pelo ultrasom e guarda na variaval <distancia>
-   calculaDistancia();
-
-   //deteta desvio do carro da linha preta e guarda na variavel <desvio>
-   //Os valores são:  -2..-1...0...1...2, consoante o desvio
-   detetaDesvio();
-
-   Serial.println("Cor: " + String(detectedColor) + "\tDst: " + String(distancia) + "\t Desv:" + String(desvio));
+  abreGarra();
+  delay(1000);
+  fechaGarra();
+    delay(1000);
+  // moveBase(BASE_MAX_ROT);
+  // delay(5000);
+  // moveBase(BASE_MIN_ROT);
+  // delay(5000);
 
    
 }

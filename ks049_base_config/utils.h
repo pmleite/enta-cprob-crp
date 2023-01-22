@@ -158,6 +158,58 @@ void detetaDesvio(){
 
 }
 
+/**
+* função que converte angulos para pulsos
+* que serão aplicados à porta PWM do MUX
+* para movimentar o respetivo servo
+* 
+* @param INT valor do ângulo pretendido de 0 a 180
+* @return um iteiro resultante da conversão angulo -> pulso
+*/
+int convertAngleToPulse(int angle){
+  return map(angle, 0, 180, SERVOMIN, SERVOMAX);
+}
+
+
+/**
+* função que faz movimentar o servo pretendido
+* 
+* @param servo  O servo que se quer movimentar
+* @param angulo O angulo para onde se quer colocar o servo
+* @param speed  A velocidade de deslocação do servo
+*/
+int moveServo(int servo, int angulo, long speed){
+
+        //Variavel para guardar a última posição
+        int lastPos;
+
+        //Guarda valor da ultima posição em função do servo indicado como argumento
+        if (servo == 9) lastPos = servGarraLastPos;
+        if (servo == 8) lastPos = servBaseLastPos;
+        if (servo == 11) lastPos = servVertLastPos;
+        if (servo == 10) lastPos = servHoriLastPos;
+       
+        //Verifica se a trajetória á crescente
+        if (lastPos < angulo){
+              for (int n = lastPos; n<= angulo; n++){
+                servoMUX.setPWM(servo,0,convertAngleToPulse(n));
+                delay(speed);
+              }
+        //Se a trajetória for decrescente
+        }else{
+          for (int n = lastPos; n>= angulo; n--){
+                servoMUX.setPWM(servo,0,convertAngleToPulse(n));
+                delay(speed);
+              }
+        }
+
+        //Guarda a última posição do respetivo servo.
+        if (servo == 9) servGarraLastPos = angulo;
+        if (servo == 8) servBaseLastPos  = angulo;
+        if (servo == 11) servVertLastPos  = angulo;
+        if (servo == 10) servHoriLastPos  = angulo;  
+}
+
 
 
 

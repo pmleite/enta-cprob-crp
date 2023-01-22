@@ -14,10 +14,10 @@
      configurações necessárias para os SERVOS 
  ************************************************/
 //Definições para os servo motores. O valor indica a posição onde liga no MUX PWM
-#define SERVO_GARRA      0   //Min 30º  Max 100º
-#define SERVO_BASE       1   //Min 0º   Max 180º
-#define SERVO_VERT       2   //
-#define SERVO_HORI       3   //Min 0º   Max 110º
+#define SERVO_GARRA      0   
+#define SERVO_BASE       1  
+#define SERVO_VERT       2   
+#define SERVO_HORI       3  
 
 //Definições das velocidades para o braço
 #define SLOW_SPEED      20
