@@ -3,7 +3,7 @@
  
 
 /* Variaveis de configuração base */
-#define BAUD_RATE             115200
+#define BAUD_RATE             9600
 #define COLOR_READ_DELAY      50    //Não deve ser inferior a 50 nem superior a 60 
 #define COLOR_CALIBRATION     false
 #define DEBUG                 true
@@ -170,7 +170,13 @@ int servVertLastPos  =   0;
 int servHoriLastPos  =   0;
 
 /**
+* Variavel p que guarda a receção da porta Serial (BlueTooth)
+*/
+char bt_receive_val;
+
+/**
 * Instância do MUX PWM
 */
 Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa! pode ser outro.
+
 //uint8_t servonum = 0;

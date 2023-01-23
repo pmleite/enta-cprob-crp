@@ -51,4 +51,5 @@ void setup() {
 
 void loop() {
   detetaDesvio();
+  checkBTCom();
 }

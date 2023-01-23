@@ -1,8 +1,24 @@
+/**
+* função que converte um valor dado em angulo para
+* para um intervalo proporcional dos pulso MIN, MAX
+* admissovel para os servos.
+*
+* @param  angle valor do angulo desejado
+* @return valor mapeado entre o angulo e os pulsos min,max admissiveis.
+*/
 int convertAngleToPulse(int angle){
   return map(angle, 0, 180, SERVOMIN, SERVOMAX);
 }
 
-int moveServo(int servo, int angulo, long speed){
+
+/**
+* função que executa um movimento de um servo
+*
+* @param  servo  o servo que se quer fazer mover
+* @param  angulo a posisão (angulo) que se quer no servo.
+* @param  speed  a velocidade do movimento (definido em constantes nos settings)
+*/
+void moveServo(int servo, int angulo, long speed){
 
         //Variavel para guardar a última posição
         int lastPos;

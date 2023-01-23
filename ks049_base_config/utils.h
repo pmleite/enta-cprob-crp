@@ -211,6 +211,16 @@ int moveServo(int servo, int angulo, long speed){
 }
 
 
+/**
+* função que verifica se está a ser recebido algum valor via comunicação
+* série proveniente do bluetooth.
+*/
+
+void checkBTCom(){
+  Serial.available() > 0 ? bt_receive_val=Serial.read() : false ;
+}
+
+
 
 
 
