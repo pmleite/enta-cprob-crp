@@ -6,7 +6,7 @@
 #define BAUD_RATE             9600
 #define COLOR_READ_DELAY      50    //Não deve ser inferior a 50 nem superior a 60 
 #define COLOR_CALIBRATION     false
-#define DEBUG                 true
+#define DEBUG                 false
 #define PULSE_FREQ            50    //Frequencia base de trabalho do MUX PWM 
 
 /* Servos - PWM index (ports) */
