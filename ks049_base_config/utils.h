@@ -145,10 +145,6 @@ void detetaDesvio(){
   centerSensorReading = !digitalRead(CENTER_IR_SENSOR);
   rightSensorReading  = !digitalRead(RIGHT_IR_SENSOR);
 
-  if(DEBUG){
-    Serial.println(String(leftSensorReading) + "\t" + String(centerSensorReading) + "\t" + String(rightSensorReading) + "\t" + desvio);
-  }
-
        if (!leftSensorReading  && centerSensorReading  && !rightSensorReading) desvio =  0;
   else if (leftSensorReading   && centerSensorReading  && !rightSensorReading) desvio = -1; 
   else if (leftSensorReading   && !centerSensorReading && !rightSensorReading) desvio = -2;
@@ -215,12 +211,12 @@ int moveServo(int servo, int angulo, long speed){
 * função que verifica se está a ser recebido algum valor via comunicação
 * série proveniente do bluetooth.
 */
-void checkBTCom(){
+char checkBTCom(){
   if(Serial.available() > 0){
    bt_receive_val=Serial.read();
-   Serial.println(); 
+   return bt_receive_val;
   }
-  delay(10);
+  return '';
 }
 
 

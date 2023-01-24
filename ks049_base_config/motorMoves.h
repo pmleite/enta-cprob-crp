@@ -54,7 +54,7 @@ void moveCarForward(int speed){
   * (Ver comentários da variavel DIF_M_SPEED)
   */
   servoMUX.setPWM(MOTOR_2_A_PWM,0,MOTOR_MAX_PULSE); 
-  servoMUX.setPWM(MOTOR_2_B_PWM,0,(MOTOR_MAX_PULSE - speed) + DIF_M_SPEED); 
+  servoMUX.setPWM(MOTOR_2_B_PWM,0,(MOTOR_MAX_PULSE - speed)); 
 }
 
 /**
@@ -69,7 +69,7 @@ void moveCarBackward(int speed){
   * M2 com fator de correção
   * (Ver comentários da variavel DIF_M_SPEED)
   */
-  servoMUX.setPWM(MOTOR_2_A_PWM,0,(MOTOR_MAX_PULSE - speed) + DIF_M_SPEED); 
+  servoMUX.setPWM(MOTOR_2_A_PWM,0,(MOTOR_MAX_PULSE - speed)); 
   servoMUX.setPWM(MOTOR_2_B_PWM,0,MOTOR_MAX_PULSE); 
 }
 
@@ -83,7 +83,7 @@ void turnCarRight(int speed, int difSpeed){
   * (Ver comentários da variavel DIF_M_SPEED)
   */
   servoMUX.setPWM(MOTOR_2_A_PWM,0, MOTOR_MAX_PULSE);                  
-  servoMUX.setPWM(MOTOR_2_B_PWM,0, (MOTOR_MAX_PULSE - speed) + DIF_M_SPEED); 
+  servoMUX.setPWM(MOTOR_2_B_PWM,0, (MOTOR_MAX_PULSE - speed)); 
 }
 
 //Vira para a direita
@@ -96,24 +96,32 @@ void turnCarLeft(int speed, int difSpeed){
   * (Ver comentários da variavel DIF_M_SPEED)
   */
   servoMUX.setPWM(MOTOR_2_A_PWM,0, (MOTOR_MAX_PULSE - difSpeed));                  
-  servoMUX.setPWM(MOTOR_2_B_PWM,0, (MOTOR_MAX_PULSE - speed) + DIF_M_SPEED); 
+  servoMUX.setPWM(MOTOR_2_B_PWM,0, (MOTOR_MAX_PULSE - speed)); 
 }
 
 //Spin car Right
 void spinCarRight(int speed, long timmer=0){
  
-  long initTime = millis();
-  Serial.println(String(millis() - initTime) + " " + String(initTime) + " " + String(timmer));
-
-  while (millis() - initTime  <= timmer){
-      /* M1 */
       servoMUX.setPWM(MOTOR_1_A_PWM,0,0);
       servoMUX.setPWM(MOTOR_1_B_PWM,0,MOTOR_MAX_PULSE - speed ); 
       /* M2 */
-      servoMUX.setPWM(MOTOR_2_A_PWM,0,(MOTOR_MAX_PULSE - speed) + DIF_M_SPEED); 
+      servoMUX.setPWM(MOTOR_2_A_PWM,0,(MOTOR_MAX_PULSE - speed)); 
       servoMUX.setPWM(MOTOR_2_B_PWM,0,0);
-  }
-  stopCar();
+      delay(timmer);
+      stopCar();
+
+  // long initTime = millis();
+
+  // while (millis() - initTime  <= timmer){
+  //     /* M1 */
+  //     servoMUX.setPWM(MOTOR_1_A_PWM,0,0);
+  //     servoMUX.setPWM(MOTOR_1_B_PWM,0,MOTOR_MAX_PULSE - speed ); 
+  //     /* M2 */
+  //     servoMUX.setPWM(MOTOR_2_A_PWM,0,(MOTOR_MAX_PULSE - speed)); 
+  //     servoMUX.setPWM(MOTOR_2_B_PWM,0,0);
+  // }
+  // stopCar();
+
 }
 
 //Spin car Left
@@ -128,7 +136,7 @@ void spinCarLeft(int speed, long timmer=0){
       servoMUX.setPWM(MOTOR_1_B_PWM,0,0); 
       /* M2 */
       servoMUX.setPWM(MOTOR_2_A_PWM,0,0); 
-      servoMUX.setPWM(MOTOR_2_B_PWM,0,(MOTOR_MAX_PULSE - speed) + DIF_M_SPEED);
+      servoMUX.setPWM(MOTOR_2_B_PWM,0,(MOTOR_MAX_PULSE - speed));
   }
   stopCar();
 }
