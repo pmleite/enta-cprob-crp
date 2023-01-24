@@ -1,136 +1,182 @@
 #include <Adafruit_PWMServoDriver.h>
 #include <Wire.h>
+ 
 
-/************************************************
-     Esta secção rerefe-se apenas às
-     configurações genéricas
- ************************************************/
-#define COLOR_DET_CALIBRATION false  //FALSE Modo de leitura TRUE Modo de calibração
-#define PULSE_FREQ            50     //Frequencia base de trabalho do MUX PWM
+/* Variaveis de configuração base */
 #define BAUD_RATE             9600
-#define COLOR_READ_DELAY      100
+#define COLOR_READ_DELAY      50    //Não deve ser inferior a 50 nem superior a 60 
+#define COLOR_CALIBRATION     false
+#define DEBUG                 true
+#define PULSE_FREQ            50    //Frequencia base de trabalho do MUX PWM 
 
-/************************************************
-     Esta seclção refere-se apenas às 
-     configurações necessárias para o
-     SENSOR de Cor
- ************************************************/
-#define S0 3
-#define S1 7
-#define S2 5
-#define S3 6
-#define SOut 8
+/* Servos - PWM index (ports) */
+#define BASE_SERVO_PWM   8
+#define CLAW_SERVO_PWM   9
+#define HORI_SERVO_PWM   10
+#define VERT_SERVO_PWM   11
 
-//Variaveis de controlo para medição dos pulsos de cor
-int whitePW   = 0;
-int redPW     = 0;
-int greenPW   = 0;
-int bluePW    = 0;
+/**
+* Definição dos valores min e max de pulsos que atuam os servos
+* Convertidos depois, pela função convertAngleToPulse() numa escala
+* de 0 a 180
+*/
+#define SERVOMIN        100  //Pulso para 0 graus (depende da marca dos servos), o nome não pode ser alterado
+#define SERVOMAX        450  //Pulso para 180 graus (depende da marca dos servos), o nome não 
 
-// Valores de calibração
-// Obtidos com o programa em modo de calibração, COLOR_DET_CALIBRATION  TRUE
-int redMin = 32;   // Red minimum value
-int redMax = 33;   // Red maximum value
+/**
+* Angulos maximos e minimos para cada servo.
+* Por limitações mecânicas nem todos os servos, do robot, podem
+* operar de 0 a 180 grau. Estes valores previnem exceder os
+* limites possiveis para cada um (Ver funções de movimento dos seros)
+*/
+#define OPENED_CLAW       120
+#define CLOSED_CLAW       30
 
-int greenMin = 114; // Green minimum value
-int greenMax = 120; // Green maximum value
+#define BASE_MAX_ROT      170
+#define BASE_MIN_ROT      30
 
-int blueMin = 73;  // Blue minimum value
-int blueMax = 74;  // Blue maximum value
+#define VERT_MAX_ROT      110
+#define VERT_MIN_ROT      0
 
-int whiteMin = 2;  // Blue minimum value
-int whiteMax = 10;  // Blue maximum value
+#define HORI_MAX_ROT      0
+#define HORI_MIN_ROT      180
+
+
+/**
+* Angulos inciais. Atenção aos limites mecânicos
+*/
+#define INIT_GARRA_ANGLE OPENED_CLAW
+#define INIT_BASE_ANGLE  90
+#define INIT_VERT_ANGLE  VERT_MIN_ROT
+#define INIT_HORI_ANGLE  HORI_MIN_ROT / 2
+
+/** 
+* Variaveis com velocidades de movimento das garras, 
+* na prática são valores de pausa para o delay().
+* quandot maior a pausa mais lento é o movimento 
+*/
+#define SLOW_SPEED      20
+#define MED_SPEED       15
+#define FAST_SPEED      8
+
+/* Motores - PWM index (porta) */
+#define MOTOR_1_A_PWM     0 //Deve ser 0, no meu mux o 1 está avaraido
+#define MOTOR_1_B_PWM     1 
+#define MOTOR_2_A_PWM     2
+#define MOTOR_2_B_PWM     3
+
+/**
+* Tensão de trabalho do motor e Vin. 
+* Necessário para calcular o PULSO Máximo mediante a fórmula:
+*
+* 4096 * Vm/Vin
+*/
+#define MOTOR_VOLTAGE    5
+#define POWER_VOLTAGE_IN 6
+
+/**
+* MOTOR_MIN_PULSE
+* Pulso mínimo do motor (velocidade minima). Este valor deve ser consiguido
+* testan qual o valor que faz com que o robot começe a andar, uma vez que 
+* vai depender do seu peso, carga das beterrias e tipo de motor
+* 
+* MOTOR_MAX_PULSE
+* Pulso máximo do motor (velocidade máxima). Este valor é calculado usando
+* a fórmula:
+* 
+*  4096 * Vm/Vin
+* 
+*  Vm = MOTOR_VOLTAGE, Vin=POWER_VOLTAGE_IN
+*/
+#define MOTOR_MIN_PULSE  2200
+#define MOTOR_MAX_PULSE  4096 * MOTOR_VOLTAGE / POWER_VOLTAGE_IN 
+
+/**
+* Calibração dos motores
+* Esta variavel é usada apenas em um motor como fator de calibração
+* se o carro, quando for dada instrução de seguir em frente, tiver um
+* desvio, devemos alterar este valor para compensar e alinhar o carro
+* pode ter valor positivo ou negativo, exp:  -100 ou + 100
+*/
+#define DIF_M_SPEED  0
+
+/* Sensor de cor - Pinos */
+#define COLOR_SENSOR_S0   5
+#define COLOR_SENSOR_S1   9
+#define COLOR_SENSOR_S2   10
+#define COLOR_SENSOR_S3   11
+#define COLOR_SENSOR_READ A3
+
+/* Sensor Ultrasonico - Pinos */
+#define ULTRA_S_PING     12
+#define ULTRA_S_ECHO     13
+
+/* Sensor de Infra Vermelhos - Pinos */
+#define LEFT_IR_SENSOR   2
+#define CENTER_IR_SENSOR 3
+#define RIGHT_IR_SENSOR  4
+
+/* LED - Pino */
+#define LED_PIN          A2
+
+//Variaveis de controlo do programa
+int redMin    = 24;     // Pulso mínimo (vermelho)
+int redMax    = 25;     // Pulso máximo (vermelho)
+
+int greenMin  = 83;  // Pulso mínimo (Verde)
+int greenMax  = 85;  // Pulso máximo (Verde)
+
+int blueMin   = 53;    // Pulso mínimo (Azul)
+int blueMax   = 54;    // Pulso máximo (Azul)
+
+int whiteMin  = 6;    // Pulso mínimo (Branco)
+int whiteMax  = 7;   // Pulso máximo (Branco)
 
 // Variaveis para a escala da função map
 int scaleLowVal  = 0;
 int scaleHighVal = 255;
 
-// Variaveis para guardar os valores finais das cores.
+// Variaveis que estão constantemente a serem atualizadas com os
+// Valores da leitura das cores
 int redValue;
 int greenValue;
 int blueValue;
 int whiteValue;
 
-/************************************************
-     Esta seclção refere-se apenas às 
-     configurações necessárias para os SERVOS 
- ************************************************/
-//Definições para os servo motores. O valor indica a posição onde liga no MUX PWM
-#define SERVO_GARRA      0   //Min 30º  Max 100º
-#define SERVO_BASE       1   //Min 0º   Max 180º
-#define SERVO_VERT       2   //
-#define SERVO_HORI       3   //Min 0º   Max 110º
+/**
+* Variavel onde é guardada a cor detetada sem sempre que há 
+* uma atualização das cores
+*/
+int detectedColor;
 
-//Definições das velocidades para o braço
-#define SLOW_SPEED      20
-#define MED_SPEED       15
-#define FAST_SPEED      8
+/**
+* Variavel com a indicação do desvio do carro
+*/
+int leftSensorReading, centerSensorReading, rightSensorReading;
+int desvio;
 
-// Definição dos valores min e max de pulsos que atuam os servos
-// Convertidos depois, pela função convertAngleToPulse() numa escala de 0 a 180
-#define SERVOMIN        100  //Pulso para 0 graus (depende da marca dos servos), o nome não pode ser alterado
-#define SERVOMAX        450  //Pulso para 180 graus (depende da marca dos servos), o nome não 
+/**
+* Variavel que armazena a distância detetada no ultrasom
+*/
+long distancia;
 
-#define INIT_GARRA_ANGLE 30
-#define INIT_BASE_ANGLE  90
-#define INIT_VERT_ANGLE  90
-#define INIT_HORI_ANGLE  0
-
-/************************************************
-     Esta seclção refere-se às instâncias
-     do MUX PWM 
- ************************************************/
-//Instancia do MUX PWM
-Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa! pode ser outro.
-uint8_t servonum = 0;
-
-//Variaveis de controlo da última posição dos servos
+/**
+* Variaveis de controlo onde é guardada a última 
+* posição conhecida dos servos
+*/
 int servGarraLastPos =   0;
 int servBaseLastPos  =   0;
 int servVertLastPos  =   0;
 int servHoriLastPos  =   0;
 
+/**
+* Variavel p que guarda a receção da porta Serial (BlueTooth)
+*/
+char bt_receive_val;
 
-/************************************************
-     Esta seclção refere-se apenas às 
-     configurações necessárias para os
-     SENSORES Infra-Vermelhos
- ************************************************/
-#define IR_LEFT_PIN    2
-#define IR_CENTER_PIN  4
-#define IR_RIGHT_PIN   7
+/**
+* Instância do MUX PWM
+*/
+Adafruit_PWMServoDriver servoMUX = Adafruit_PWMServoDriver(0x40); //Atenção ao endereço da placa! pode ser outro.
 
-#define SLOW_SPEED      20
-#define MED_SPEED       15
-#define FAST_SPEED      8
-
-/************************************************
-     Esta seclção refere-se apenas às 
-     configurações necessárias para os MOTORES 
- ************************************************/
-
-//Tensão de trabalho do motor e Vin. Necessário para calcular o PULSO Máximo
-#define MOTOR_VOLTAGE    5
-#define POWER_VOLTAGE_IN 6
-
-/* 
- * Estes dois valores são depois convertidos com a função convertSpeedToPulse() 
- * numa escala de 0 a 100, sendo que 0 é a velocidade minima possivel de andamento
- * obtida com uma calibração de velocidade minima.
- */
-#define MOTOR_MIN_PULSE  1000 //Pulso para a velocidade mínima (Obter com calibração)
-#define MOTOR_MAX_PULSE  4096 * MOTOR_VOLTAGE / POWER_VOLTAGE_IN  //VMAX -  Calculado com a fórmula (4096 * Vm/Vin)
-
-/*
- * Constantes que irão definir a diferenca de velocidade entre
- * motores para fazer uma curva suave ou mais acentuada.
- * Na prática será o resultado de MOTOR_MAX_PULSE - (um valaor a definir)
- */
-#define DIF_TURN_SPD_S   MOTOR_MAX_PULSE - 300
-#define DIF_TURN_SPD_F   MOTOR_MAX_PULSE - 1000
-
-//Motor PWM - Index
-#define MOTOR_1_A        8   //PWM MUX - Pino S1 do motor 1
-#define MOTOR_1_B        9   //PWM MUX - Pino S2 do motor 1
-#define MOTOR_2_A        10  //PWM MUX - Pino S1 do motor 2
-#define MOTOR_2_B        11  //PWM MUX - Pino S2 do motor 2
+//uint8_t servonum = 0;
