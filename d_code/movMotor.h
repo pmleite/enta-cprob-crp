@@ -23,29 +23,55 @@ void recuar(int velocidade){
 }
 
 
+void direita(int velocidade, int diff){
+
+  /*M1*/
+  servoMUX.setPWM(M1_PIN_1,0,MAX_M_PULS - velocidade); //pulso maximo possivel
+  servoMUX.setPWM(M1_PIN_2,0,MAX_M_PULS - diff ); //pulso que controla a velicidade
+
+  /*M2*/
+  servoMUX.setPWM(M2_PIN_1,0,MAX_M_PULS - velocidade); //pulso maximo possivel
+  servoMUX.setPWM(M2_PIN_2,0,MAX_M_PULS - diff); //pulso que controla a velicidade
+
+}
+
+void esquerda(int velocidade, int diff){
+
+  /*M1*/
+  servoMUX.setPWM(M1_PIN_1,0,MAX_M_PULS - diff); //pulso maximo possivel
+  servoMUX.setPWM(M1_PIN_2,0,MAX_M_PULS - velocidade ); //pulso que controla a velicidade
+
+  /*M2*/
+  servoMUX.setPWM(M2_PIN_1,0,MAX_M_PULS - diff); //pulso maximo possivel
+  servoMUX.setPWM(M2_PIN_2,0,MAX_M_PULS - velocidade); //pulso que controla a velicidade
+
+}
+
+
+
 void segueLinha() {
 
   int leftValue   = analogRead(LEFT_IR_SENS);
   int middleValue = analogRead(MIDD_IR_SENS);
   int rightValue  = analogRead(RIGH_IR_SENS);
 
-  if (leftValue > 500 && middleValue > 500 && rightValue > 500) {
+  if (leftValue == LOW && middleValue == LOW && rightValue == LOW) {
     // all sensors are on the line
     digitalWrite(leftMotor, HIGH);
     digitalWrite(rightMotor, HIGH);
-  } else if (leftValue > 500 && middleValue > 500) {
-    // sensors are on the line
+  } else if (leftValue == LOW && middleValue == LOW) {
+    // left and middle sensors are on the line
     digitalWrite(leftMotor, HIGH);
     digitalWrite(rightMotor, LOW);
-  } else if (middleValue > 500 && rightValue > 500) {
-    // sensors are on the line
+  } else if (middleValue == LOW && rightValue == LOW) {
+    // middle and right sensors are on the line
     digitalWrite(leftMotor, LOW);
     digitalWrite(rightMotor, HIGH);
-  } else if (leftValue > 500) {
+  } else if (leftValue == LOW) {
     // left sensor is on the line
     digitalWrite(leftMotor, HIGH);
     digitalWrite(rightMotor, LOW);
-  } else if (rightValue > 500) {
+  } else if (rightValue == LOW) {
     // right sensor is on the line
     digitalWrite(leftMotor, LOW);
     digitalWrite(rightMotor, HIGH);
