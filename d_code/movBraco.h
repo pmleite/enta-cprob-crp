@@ -1,4 +1,15 @@
-moveServo(Servo servo, int angulo, long speed){
+
+void apanhaObjeto(){
+   //movimento para agarrar objeto
+}
+
+
+void largaObjeto(){
+   //Movimento para largar objeto
+}
+
+
+void moveServo(Servo servo, int angulo, long speed){
         
         //identifica a posisão do servo
         int lastPos  = servo.read();

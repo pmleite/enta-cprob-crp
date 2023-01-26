@@ -13,12 +13,16 @@
 #define HORI_SERVO_PIN   10
 #define VERT_SERVO_PIN   11
 
-#define M1_PIN_1   5
-#define M1_PIN_2   9
-#define M2_PIN_1   10
-#define M2_PIN_2   11
+#define M1_PIN_1   0
+#define M1_PIN_2   1
+#define M2_PIN_1   2
+#define M2_PIN_2   3
 
-#define MAX_M_PULS   2600
+//Pinos do sensor ultrasonico
+#define ULTRA_S_PING     2
+#define ULTRA_S_ECHO     3
+
+#define MAX_M_PULS       2600
 
 #define PULSE_FREQ       50
 

@@ -1,6 +1,7 @@
 #include "config.h"
 #include "movMotor.h"
 #include "movBraco.h"
+#include "utils.h"
 
 void setup() {
   
@@ -17,51 +18,37 @@ void setup() {
   pinMode(MIDD_IR_SENS, INPUT);
   pinMode(RIGH_IR_SENS, INPUT);
 
+  pinMode(ULTRA_S_ECHO, INPUT);
+  pinMode(ULTRA_S_PING, OUTPUT);
 
-  base.attach(5);   
-  claw.attach(9);   
-  hori.attach(10);    
-  vert.attach(11);   
+  base.attach(BASE_SERVO_PIN);   
+  claw.attach(CLAW_SERVO_PIN);   
+  hori.attach(HORI_SERVO_PIN);    
+  vert.attach(VERT_SERVO_PIN);   
 
   servoMUX.begin();
-  servoMUX.setPWMFreq(PULSE_FREQ); 
+  servoMUX.setPWMFreq(PULSE_FREQ);
+  delay(50); 
+
+  demoMove();  //Comentar depois de mostrar aos jurados
+  delay(3000);
+
 }
 
 void loop() {
 
+  long tempoAteLargarObjeto =  10000;
 
-
-  //Carro
-  avancar(1000);
-  delay(2000);
-  recuar(1000);
-  delay(2000);
-  
-  //Base
-  moveServo(base, 90, 10);
-  delay(1000);
-  moveServo(base, 0, 10);
-  delay(1000);
-  moveServo(base, 180, 10);
-  delay(1000);
-
-  //Garra
-  moveServo(claw, 0, 10);
-  delay(1000);
-  moveServo(claw, 110, 10);
-  delay(1000);
-
-  //Horizontal
-  moveServo(hori, 90, 10);
-  delay(1000);
-  moveServo(hori, 170, 10);
-  delay(1000);
-
-  //Vertical
-  moveServo(vert, 0, 10);
-  delay(1000);
-  moveServo(vert, 100, 10);
-  delay(1000);
-
+  if (calculaDistancia() >=30){
+    segueLinha();
+  }
+  else if (calculaDistancia >=18) {
+    apanhaObjeto();
+    long iniTime = millis();
+    while(millis() - iniTime <= tempoAteLargarObjeto){
+      segueLinha();
+    }
+    largaObjeto();
+  }
 
 }
